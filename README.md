@@ -70,7 +70,7 @@ Demo : https://rawgit.com/rdardeau/navtabbing/master/demos/push-tabs.html
 
 You can also use hash : https://rawgit.com/rdardeau/navtabbing/master/demos/hash-tabs.html
 
-### Ajax Loading
+## Ajax Loading
 
 You can load a tab content only if needed with Ajax using the ```data-tabs-load``` attribute and specifying a container (```js-tabs-container``` by default) :
 ```
@@ -101,7 +101,7 @@ You can add a condition for the live reload, using the ```data-tabs-refresh-cond
 <li class="js-tabs-item" data-tabs-load="content-2.html" data-tabs-refresh="10" data-tabs-refresh-condition=".js-isLive"><a href="#">item 2</a></li>
 ```
 
-### Events
+## Events
 
 3 special events are fired on tabing :
 
