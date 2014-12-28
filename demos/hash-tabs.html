@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>navabbing</title> 
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" />
+</head>
+<body>
+	
+	<div class="js-tabs">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav">
+						<li class="js-tabs-item"><a href="#item-1">Item 1</a></li>
+						<li class="js-tabs-item"><a href="#item-2">Item 2</a></li>
+						<li class="js-tabs-item"><a href="#item-3">Item 3</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="js-tabs-content" data-tabs-eq="2">
+				content 3
+			</div>
+			<div class="js-tabs-content" data-tabs-eq="1">
+				content 2
+			</div>
+			<div class="js-tabs-content" data-tabs-eq="0">
+				content 1
+			</div>
+		</div>
+	</div><!-- /js-tabs -->
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="../jquery.navtabing.js"></script>
+	<script>
+	$(function() {
+		$(".js-tabs").navtabing({tabClass:"active"});
+	});
+	</script>
+</body>
+</html>
