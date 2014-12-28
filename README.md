@@ -67,6 +67,7 @@ You can give a specific URL to each tabs without reload the page :
 <li class="js-tabs-item"><a href="/item-2/">item 2</a></li>
 ```
 Demo : https://rawgit.com/rdardeau/navtabbing/master/demos/push-tabs.html
+
 You can also use hash : https://rawgit.com/rdardeau/navtabbing/master/demos/hash-tabs.html
 
 ### Ajax Loading
