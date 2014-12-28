@@ -29,6 +29,15 @@
 	<script type="text/javascript" src="../jquery.navtabing.js"></script>
 	<script>
 	$(function() {
+		$(".js-tabs").on("tabing", function() {
+			console.log("tabing");
+		});
+		$(".js-tabs").on("tabing-refresh", function() {
+			console.log("tabing-refresh");
+		});
+		$(".js-tabs").on("tabing-ready", function() {
+			console.log("tabing-ready");
+		});
 		$(".js-tabs").navtabing({tabClass:"active"});
 	});
 	</script>

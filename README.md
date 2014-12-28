@@ -100,3 +100,15 @@ You can add a condition for the live reload, using the ```data-tabs-refresh-cond
 ```
 <li class="js-tabs-item" data-tabs-load="content-2.html" data-tabs-refresh="10" data-tabs-refresh-condition=".js-isLive"><a href="#">item 2</a></li>
 ```
+
+### Events
+
+3 special events are firing on tabing :
+
+```tabing``` when you start to switch a tab
+
+```tabing ready``` when a tab has loaded and switched
+
+```tabing refresh``` when a tab has been refreshed
+
+You can view the log in your console on the demo pages.
