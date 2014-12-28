@@ -103,12 +103,12 @@ You can add a condition for the live reload, using the ```data-tabs-refresh-cond
 
 ### Events
 
-3 special events are firing on tabing :
+3 special events are fired on tabing :
 
-```tabing``` when you start to switch a tab
+```tabing``` when you start to switch to a tab
 
-```tabing ready``` when a tab has loaded and switched
+```tabing-ready``` when a tab has switched and loaded
 
-```tabing refresh``` when a tab has been refreshed
+```tabing-refresh``` when a tab has been refreshed
 
-You can view the log in your console on the demo pages.
+You can see the log in your console on the demo pages.
