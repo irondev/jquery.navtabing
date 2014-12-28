@@ -1,4 +1,4 @@
-navtabbing
+navtabing
 ==========
 
 jQuery pluging to manage navigation with tabs.
