@@ -57,9 +57,10 @@ $(function() {
     var pluginName = "navtabing",
         defaults = {
             tabElements: ".js-tabs-item",
-            tabClass: "is-active",
             tabContentElements: ".js-tabs-content",
-            tabContentBloc: ".js-tabs-container"
+            tabContentBloc: ".js-tabs-container",
+            tabActiveClass: "is-active",
+            tabDisabledClass: "is-disabled"
         };
 
     function Plugin (element, options) {
@@ -74,10 +75,10 @@ $(function() {
         init: function () {
             this.setElements();
             this.setEvents();
-            if (this.$tabs.filter("."+ this.settings.tabClass).length)
-                this.$tabs.filter("."+ this.settings.tabClass).trigger("click");
+            if (this.$tabs.filter("."+ this.settings.tabActiveClass).length)
+                this.$tabs.filter("."+ this.settings.tabActiveClass).trigger("click");
             else
-                this.$tabs.first().trigger("click");
+                this.$tabs.not("." + this.settings.tabDisabledClass).first().trigger("click");
          },
         setElements: function () {
             this.$element = $(this.element);
@@ -87,32 +88,30 @@ $(function() {
         },
         setEvents: function () {
             this.$tabs.on("click", $.proxy(function (e) {
-                if (!this.xhr) {
+                this.$tab = $(e.currentTarget);
+                if (!this.xhr && !this.$tab.hasClass(this.settings.tabDisabledClass)) {
                     clearTimeout(this.autoTimer);
-                    this.$tab = $(e.currentTarget);
-					var tabIndex = this.$tabs.index(this.$tab);
-					if (!this.$tab.hasClass(this.settings.tabClass)) {
-						this.$element.trigger("tabing");
-						if (window.history.pushState && this.$tab.children("a") && this.$tab.children("a").attr("href").length > 1) {
-							var scrollTop = 0;
-							if ($(window).scrollTop())
-								scrollTop = $(window).scrollTop();
-							else if (window.location.hash && $(window.location.hash).length)
-								scrollTop = $(window.location.hash).offset().top;
-							else if (window.location.hash && $("a[name='"+ window.location.hash.substr(1) +'"').length)
-								scrollTop = $("a[name='"+ window.location.hash.substr(1) +'"').offset().top;
-							window.history.pushState({tabIndex:tabIndex, scrollTop:scrollTop}, tabIndex, this.$tab.children("a").attr("href"));
-						}
-					}
-					if (this.$tabsContent.length == 1 && !this.$tabsContent.filter("[data-tabs-eq]").length) {
-						this.$tabsContent.first().attr("data-tabs-eq", tabIndex);
-						if (this.$tab.attr("data-tabs-load") && !this.$tab.attr("data-tabs-refresh"))
-							this.$tab.removeAttr("data-tabs-load");
-                    } 
-					if (this.$tab.attr("data-tabs-load"))
+                    var tabIndex = this.$tabs.index(this.$tab);
+                    if (this.$tabsContent.length == 1 && !this.$tabsContent.filter("[data-tabs-eq]").length) {
+                        this.$tabsContent.first().attr("data-tabs-eq", tabIndex);
+                        if (!this.$tab.attr("data-tabs-refresh"))
+                            this.$tab.removeAttr("data-tabs-load");
+                    }
+                    if (this.$tab.attr("data-tabs-load"))
                         this.loadContent(tabIndex);
                     else
                         this.showContent(tabIndex);
+                    if (window.history.pushState && this.$tab.children("a") && this.$tab.children("a").attr("href").length > 1) {
+                        var scrollTop = 0;
+                        if ($(window).scrollTop())
+                            scrollTop = $(window).scrollTop();
+                        else if (window.location.hash && $(window.location.hash).length)
+                            scrollTop = $(window.location.hash).offset().top;
+                        else if (window.location.hash && $("a[name='"+ window.location.hash.substr(1) +'"').length)
+                            scrollTop = $("a[name='"+ window.location.hash.substr(1) +'"').offset().top;
+                        window.history.pushState({tabIndex:tabIndex, scrollTop:scrollTop}, tabIndex, this.$tab.children("a").attr("href"));
+                    }
+                    this.$element.trigger("tabing");
                 }
                 e.preventDefault();
             }, this));
@@ -123,7 +122,7 @@ $(function() {
                     if (this.$tab.attr("data-tabs-load"))
                         this.loadContent(datas.tabIndex);
                     else
-						this.showContent(datas.tabIndex);
+                        this.showContent(datas.tabIndex);
                     $(window).scrollTop(datas.scrollTop);
                 }
             }, this));
@@ -136,8 +135,7 @@ $(function() {
                     this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").replaceWith(html);
                     this.$tabsContent = this.$element.find(this.settings.tabContentElements);
                     this.$tabsContent.not("[data-tabs-eq]").attr("data-tabs-eq", tabIndex);
-                    if (this.$tab.hasClass(this.settings.tabClass))
-						this.$element.trigger("tabing-refresh");
+                    this.$element.trigger("tabing-refresh");
                 } else {
                     this.$tabsContentBloc.append(html);
                     this.$tabsContent = this.$element.find(this.settings.tabContentElements);
@@ -154,16 +152,16 @@ $(function() {
             }, this));
         },
         showContent: function(tabIndex) {
-			this.$tabsContent.hide();
-			if (this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").length)
-				this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").show();
-			else
-				this.$tabsContent.eq(tabIndex).show();
-            if (!this.$tab.hasClass(this.settings.tabClass)) {
-                this.$tabs.filter("." + this.settings.tabClass).removeClass(this.settings.tabClass);
-                this.$tab.addClass(this.settings.tabClass);
-				this.$element.trigger("tabing-ready");
-			}
+            if (!this.$tab.hasClass(this.settings.tabActiveClass)) {
+                this.$tabs.filter("." + this.settings.tabActiveClass).removeClass(this.settings.tabActiveClass);
+                this.$tab.addClass(this.settings.tabActiveClass);
+                this.$tabsContent.hide();
+                if (this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").length)
+                    this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").show();
+                else
+                    this.$tabsContent.eq(tabIndex).show();
+                this.$element.trigger("tabing-ready");
+            }
         },
         setRefresh: function(interval, condition) {
             if (!condition || this.$element.find(condition).length) {
