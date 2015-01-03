@@ -26,7 +26,7 @@ $(function() {
 });
 </script>
 ```
-Demo : https://rawgit.com/rdardeau/navtabbing/master/demos/simple-tabs.html
+Demo : https://rawgit.com/irondev/jquery.navtabing/master/demos/simple-tabs.html
 
 When a tab is actived, the item has the class ```is-active``` by default. You can custom this class name :
 ```
@@ -66,9 +66,9 @@ You can give a specific URL to each tabs without reload the page :
 <li class="js-tabs-item"><a href="/item-1/">item 1</a></li>
 <li class="js-tabs-item"><a href="/item-2/">item 2</a></li>
 ```
-Demo : https://rawgit.com/rdardeau/navtabbing/master/demos/push-tabs.html
+Demo : https://rawgit.com/irondev/jquery.navtabing/master/demos/push-tabs.html
 
-You can also use hash : https://rawgit.com/rdardeau/navtabbing/master/demos/hash-tabs.html
+You can also use hash : https://rawgit.com/irondev/jquery.navtabing/master/demos/hash-tabs.html
 
 ## Ajax Loading
 
@@ -82,7 +82,7 @@ You can load a tab content only if needed with Ajax using the ```data-tabs-load`
     <div class="js-tabs-container"></div>
 </div>
 ```
-Demo : https://rawgit.com/rdardeau/navtabbing/master/demos/ajax-tabs.html
+Demo : https://rawgit.com/irondev/jquery.navtabing/master/demos/ajax-tabs.html
 
 You can custom the class names of the container :
 ```
