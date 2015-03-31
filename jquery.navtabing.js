@@ -75,11 +75,18 @@ $(function() {
         init: function () {
             this.setElements();
             this.setEvents();
-            if (this.$tabs.filter("."+ this.settings.tabActiveClass).length)
-                this.$tabs.filter("."+ this.settings.tabActiveClass).trigger("click");
-            else
-                this.$tabs.not("." + this.settings.tabDisabledClass).first().trigger("click");
-         },
+            if (!this.$tabs.filter("."+ this.settings.tabActiveClass).length)
+                this.$tabs.not("."+ this.settings.tabDisabledClass).first().trigger("click");
+            else if (!this.$tabsContent.length)
+                this.$tabs.filter("."+ this.settings.tabActiveClass).removeClass(this.settings.tabActiveClass).trigger("click");
+            else if (!this.$tabsContent.filter("[data-tabs-eq]").length) {
+                this.$tabsContent.first().attr("data-tabs-eq", this.$tabs.filter("."+ this.settings.tabActiveClass).index());
+                if (this.$tabs.filter("."+ this.settings.tabActiveClass).attr("data-tabs-refresh")) {
+                    this.$tab = this.$tabs.filter("."+ this.settings.tabActiveClass);
+                    this.setRefresh(this.$tab.data("tabs-refresh") * 1000, this.$tab.data("tabs-refresh-condition"));
+                }  
+            }
+        },
         setElements: function () {
             this.$element = $(this.element);
             this.$tabs = this.$element.find(this.settings.tabElements);
@@ -132,10 +139,12 @@ $(function() {
             this.$element.addClass("is-loading");
             this.xhr = $.get(url, $.proxy(function (html) {
                 if (this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").length) {
-                    this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").replaceWith(html);
+                    var parsedHTML = $.parseHTML(html);
+                    $(parsedHTML).filter(this.settings.tabContentElements).attr("data-tabs-eq", tabIndex);
+                    this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").replaceWith(parsedHTML);
                     this.$tabsContent = this.$element.find(this.settings.tabContentElements);
-                    this.$tabsContent.not("[data-tabs-eq]").attr("data-tabs-eq", tabIndex);
-                    this.$element.trigger("tabing-refresh");
+                    if (this.$tab.hasClass(this.settings.tabActiveClass))
+                        this.$element.trigger("tabing-refresh");
                 } else {
                     this.$tabsContentBloc.append(html);
                     this.$tabsContent = this.$element.find(this.settings.tabContentElements);
@@ -159,7 +168,7 @@ $(function() {
                 if (this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").length)
                     this.$tabsContent.filter("[data-tabs-eq='"+ tabIndex +"']").show();
                 else
-                    this.$tabsContent.eq(tabIndex).show();
+                    this.$tabsContent.eq(tabIndex).attr("data-tabs-eq", tabIndex).show();
                 this.$element.trigger("tabing-ready");
             }
         },
